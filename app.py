@@ -10,7 +10,22 @@ from sklearn.preprocessing import StandardScaler
 # Define the functions for audio feature extraction and emotion prediction
 def extract_features(audio_file):
     # Implement audio feature extraction (e.g., MFCCs, pitch)
-    # ...
+    try:
+        # Load the audio file
+        y, sr = librosa.load(audio_file)
+
+        # Extract MFCCs (Mel-Frequency Cepstral Coefficients)
+        mfccs = librosa.feature.mfcc(y=y, sr=sr, n_mfcc=13)  # You can adjust the number of MFCC coefficients
+
+        # Calculate the mean of MFCC coefficients as features
+        features = np.mean(mfccs, axis=1)
+
+        return features
+
+    except Exception as e:
+        # Handle errors or exceptions gracefully
+        print(f"An error occurred during audio feature extraction: {str(e)}")
+        return None
     return features
 
 def train_emotion_model():
